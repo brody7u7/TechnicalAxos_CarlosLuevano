@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:labels="clr-namespace:TechnicalAxos_CarlosLuevano.Resources.Labels"
+             xmlns:viewmodels="clr-namespace:TechnicalAxos_CarlosLuevano.ViewModels"
+             xmlns:modelsns="clr-namespace:TechnicalAxos_CarlosLuevano.Models.Newtonsoft"
+             xmlns:modelstj="clr-namespace:TechnicalAxos_CarlosLuevano.Models.TextJson"
+             x:Class="TechnicalAxos_CarlosLuevano.Pages.MainPage"
+             Title="TechnicalAxos CarlosLuevano"
+             x:DataType="viewmodels:MainViewModel">
+    <Grid
+        Padding="{StaticResource Margin}"
+        RowSpacing="{StaticResource Margin12}"
+        RowDefinitions="*,Auto">
+        <CollectionView
+            VerticalOptions="Fill"
+            ItemsSource="{Binding CountriesTJ}"
+            SelectionMode="None"
+            VerticalScrollBarVisibility="Never"
+            Grid.Row="0">
+            <CollectionView.Header>
+                <VerticalStackLayout>
+                    <Label 
+                        Text="{Binding BundleId}"
+                        VerticalOptions="Center" 
+                        HorizontalOptions="Center"
+                        Style="{StaticResource SubHeadline}"/>
+                    <Image 
+                        Source="{Binding Source}"
+                        WidthRequest="{OnIdiom Phone=200, Tablet=270}"
+                        HeightRequest="{OnIdiom Phone=200, Tablet=270}"
+                        HorizontalOptions="Center"
+                        Aspect="AspectFill"/>
+                </VerticalStackLayout>
+            </CollectionView.Header>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="modelstj:CountryTextJson">
+                    <Grid
+                        RowDefinitions="Auto,Auto"
+                        ColumnDefinitions="*,*"
+                        RowSpacing="{StaticResource Margin14}">
+                        <Label 
+                            Text="{Binding Name.Official}"
+                            FontSize="Medium"
+                            Grid.ColumnSpan="2"/>
+                        <Label 
+                             FontSize="Small"
+                             Grid.Row="1"
+                             Grid.Column="0">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Static labels:Texts.IsoTwoLetterFormat}"
+                                          FontAttributes="Bold"/>
+                                    <Span Text="{Binding Cca2}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label 
+                             FontSize="Small"
+                             Grid.Row="1"
+                             Grid.Column="1">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Static labels:Texts.PopulationFormat}"
+                                          FontAttributes="Bold"/>
+                                    <Span Text="{Binding Population}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Button
+            Text="{Static labels:Texts.PickPhoto}"
+            Command="{Binding PickImageCommand}"
+            Grid.Row="1"/>
+        <ActivityIndicator 
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            IsRunning="{Binding IsBusy}"
+            Grid.RowSpan="2"/>
+    </Grid>
+</ContentPage>
